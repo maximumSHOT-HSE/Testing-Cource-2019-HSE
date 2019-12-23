@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -12,8 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class CreateIssueTest {
 
@@ -112,6 +112,8 @@ public class CreateIssueTest {
         String description = "description";
         createIssuePage.createIssue(summary, description);
         createIssuePage.wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("errorSeverity")));
+        WebElement errorElement = createIssuePage.driver.findElement(By.className("errorSeverity"));
+        assertEquals("Summary is required", errorElement.getText());
         createIssuePage.moveHome();
         List<Issue> issues = issuesPage.getIssuePages();
         assertArrayEquals(
@@ -131,6 +133,8 @@ public class CreateIssueTest {
 
         createIssuePage.createIssue(summary, description);
         createIssuePage.wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("errorSeverity")));
+        WebElement errorElement = createIssuePage.driver.findElement(By.className("errorSeverity"));
+        assertEquals("Summary is required", errorElement.getText());
         createIssuePage.moveHome();
 
         List<Issue> issuesAfter = issuesPage.getIssuePages();
