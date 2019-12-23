@@ -14,7 +14,7 @@ public class Page implements Closeable {
     protected static final String HOME_BUTTON_CLASS_NAME = "ring-menu__logo";
     private static final String ISSUES_PAGE_CLASS_NAME = "ring-menu__item__i";
 
-    protected static final int TIMEOUT_IN_SECONDS = 10;
+    protected static final int TIMEOUT_IN_SECONDS = 1;
     protected final WebDriver driver;
     protected final WebDriverWait wait;
 
@@ -31,21 +31,37 @@ public class Page implements Closeable {
 
     public List<WebElement> getElementsById(String id) {
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id(id)));
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id(id)));
         return driver.findElements(By.id(id));
     }
 
     public List<WebElement> getElementsByClassName(String className) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
         return driver.findElements(By.className(className));
     }
 
+    public List<WebElement> getElementsByXPath(String xpath) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+        return driver.findElements(By.xpath(xpath));
+    }
+
+    public List<WebElement> getElementsByCSSSelector(String cssSelector) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(cssSelector)));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(cssSelector)));
+        return driver.findElements(By.cssSelector(cssSelector));
+    }
+
     public void moveHome() {
-        getElementsByClassName(HOME_BUTTON_CLASS_NAME).get(0).click();
+        getElementsByCSSSelector("[title*='YouTrack Dashboard']").get(0).click();
+        wait.until(ExpectedConditions.urlContains("dashboard"));
+        wait.until(ExpectedConditions.urlContains("dashboard"));
     }
 
     public void moveToIssues() {
         moveHome();
-        WebElement issuesButton = getElementsByClassName(ISSUES_PAGE_CLASS_NAME).get(0);
+        WebElement issuesButton = getElementsByXPath(".//*[text()='Issues']/..").get(0);
         issuesButton.click();
     }
 

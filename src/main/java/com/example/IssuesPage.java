@@ -1,7 +1,9 @@
 package com.example;
 
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,9 +19,16 @@ public class IssuesPage extends Page {
     public List<Issue> getIssuePages() {
         moveToIssues();
 
-        List<String> anchors = getElementsByClassName(ISSUE_ID_ANCHOR_CLASS_NAME).stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
+        List<String> anchors;
+
+        try {
+            anchors = getElementsByClassName(ISSUE_ID_ANCHOR_CLASS_NAME).stream()
+                    .map(WebElement::getText)
+                    .collect(Collectors.toList());
+        } catch (TimeoutException e) {
+            anchors = Collections.emptyList();
+        }
+
         return anchors.stream()
                 .map(s -> {
                     Issue issue = getIssuePageByAnchor(s);
